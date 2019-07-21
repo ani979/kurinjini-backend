@@ -36,7 +36,7 @@ class CustomerListCreate(generics.ListCreateAPIView):
                     html_content = html_content + '<li> Quantity: ' + str(aProduct['quantity']) + '</li>'
                     html_content = html_content + '</ul>' + '<br\><br\>'
 
-                html_content = html_content + '<p>' + 'Some one will get in touch with your shortly on the number ' + phone +  '. Thank you so much </p>'
+                html_content = html_content + '<p>' + 'Someone will get in touch with you shortly on your number ' + phone +  '. Thank you so much </p>'
                 #msg = EmailMultiAlternatives(subject, html_content, from_email, [recipient_list])
                 email = EmailMultiAlternatives(subject, html_content, from_email, recipient_list)
                 email.attach_alternative(html_content, "text/html")
