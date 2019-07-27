@@ -23,9 +23,9 @@ class CustomerListCreate(generics.ListCreateAPIView):
             try:
                 subject = "For Order" + order
                 from_email = fromMail
-                recipient_list = [toMail, "shilpi@kurinjiniskincare.com", "animesh@kurinjiniskincare.com"]
+                recipient_list = [toMail, "ani979@gmail.com", "itsshilpy@gmail.com"]
                 html_content = '<p> The details of your order are here</p>'
-                print(phone)
+                #print(phone)
                 for aProduct in products:
                     #print(aProduct)
                     html_content = html_content + '<ul>product:'
