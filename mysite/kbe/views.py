@@ -21,14 +21,18 @@ class CustomerListCreate(generics.ListCreateAPIView):
 
         def send_email(fromMail, toMail, order, products, phone):
             try:
-                subject = "For Order" + order
+                subject = "Your Kurinjini Order " + order + " has been received!"
                 from_email = fromMail
                 recipient_list = [toMail, "ani979@gmail.com", "itsshilpy@gmail.com"]
-                html_content = '<p> The details of your order are here</p>'
+                html_content = '<h3 style="text-transform:uppercase;"> Dear ' + request.data['user']['fname'] + '</h3>' \
+                                                                              '<br/>' \
+                                '<p>Thank you for placing an order with us. ' \
+                                    'We absolutely love that you gave us a chance to serve you. ' \
+                                    'Your order details are as noted below:</p>'
                 #print(phone)
                 for aProduct in products:
                     #print(aProduct)
-                    html_content = html_content + '<ul>product:'
+                    html_content = html_content + '<ul>Product:'
                     html_content = html_content + '<li> Name: ' + aProduct['name'] + '</li>'
                     html_content = html_content + '<li> Flavour: ' + aProduct['flavour'] + '</li>'
                     html_content = html_content + '<li> Volume/Weight: ' + aProduct['volume'] + '</li>'
@@ -36,7 +40,7 @@ class CustomerListCreate(generics.ListCreateAPIView):
                     html_content = html_content + '<li> Quantity: ' + str(aProduct['quantity']) + '</li>'
                     html_content = html_content + '</ul>' + '<br\><br\>'
 
-                html_content = html_content + '<p>' + 'Someone will get in touch with you shortly on your number ' + phone +  '. Thank you so much </p>'
+                html_content = html_content + '<p>' + 'Thank You For Your Order. Someone will get in touch with you shortly. </p>'
                 #msg = EmailMultiAlternatives(subject, html_content, from_email, [recipient_list])
                 email = EmailMultiAlternatives(subject, html_content, from_email, recipient_list)
                 email.attach_alternative(html_content, "text/html")
