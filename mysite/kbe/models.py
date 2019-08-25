@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 class Customer(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField(validators=[validators.EmailValidator],primary_key=True)
-    phone = models.CharField(max_length=17, blank=True, validators=[RegexValidator(regex='^\d{10}$', message='Length has to be 10', code='Invalid number')])
+    phone = models.CharField(max_length=17, blank=True)
     address_line_1 = models.CharField(
         "Address line 1",
         max_length=1024,

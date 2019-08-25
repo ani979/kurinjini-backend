@@ -23,7 +23,7 @@ class CustomerListCreate(generics.ListCreateAPIView):
             try:
                 subject = "Your Kurinjini Order " + order + " has been received!"
                 from_email = fromMail
-                recipient_list = [toMail, "ani979@gmail.com", "itsshilpy@gmail.com"]
+                recipient_list = [toMail, "shilpi@kurinjiniskincare.com", "animesh@kurinjiniskincare.com"]
                 html_content = '<h3 style="text-transform:uppercase;"> Dear ' + request.data['user']['fname'] + '</h3>' \
                                                                               '<br/>' \
                                 '<p>Thank you for placing an order with us. ' \
@@ -40,7 +40,7 @@ class CustomerListCreate(generics.ListCreateAPIView):
                     html_content = html_content + '<li> Quantity: ' + str(aProduct['quantity']) + '</li>'
                     html_content = html_content + '</ul>' + '<br\><br\>'
 
-                html_content = html_content + '<p>' + 'Thank You For Your Order. Someone will get in touch with you shortly. </p>'
+                html_content = html_content + '<p>' + 'We will get in touch with you shortly. </p>'
                 #msg = EmailMultiAlternatives(subject, html_content, from_email, [recipient_list])
                 email = EmailMultiAlternatives(subject, html_content, from_email, recipient_list)
                 email.attach_alternative(html_content, "text/html")
@@ -107,7 +107,7 @@ class CustomerListCreate(generics.ListCreateAPIView):
         if orderSerializer.is_valid():
             print(orderSerializer.validated_data)
             orderSerializer.save()
-            send_email("shilpi@kurinjiniskincare.com",email,order['order_id'], products, phone)
+            send_email("orders@kurinjiniskincare.com",email,order['order_id'], products, phone)
             return Response(orderSerializer.data, status=status.HTTP_201_CREATED)
 
         return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
