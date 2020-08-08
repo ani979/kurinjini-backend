@@ -17,6 +17,7 @@ class Customer(models.Model):
         max_length=1024,
         blank=True
     )
+    address = models.TextField("", null=True, blank=True)
     city = models.CharField(max_length=100, blank = True)
     state = models.CharField(max_length=100, blank = True)
     country = models.CharField(max_length=100, blank = True)
@@ -36,6 +37,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = JSONField()
     price = models.DecimalField(max_digits=6, decimal_places=2, default=200.00)
+    notes = models.TextField("", null=True, blank=True)
 
     def __str__(self):
         return self.order_id
