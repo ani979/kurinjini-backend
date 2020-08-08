@@ -22,3 +22,12 @@ python manage.py makemigrations
 python manage.py runserver
 
 ## A file base.py would be missing. Do let me know and i shall mail you that
+
+## Now when you go to server login using SSH on EC2
+sudo systemctl stop uwsgi
+sudo systemctl restart uwsgi
+sudo nginx -t && sudo systemctl restart nginx
+
+## helper to know ports
+lsof -i:8001
+sudo nestat -lnp
