@@ -47,7 +47,7 @@ class CustomerListCreate(generics.ListCreateAPIView):
                     html_content = html_content + '<p><b>Notes:</b>' + notes + "</p>"  
                 html_content = html_content + '<p>' + 'We will get in touch with you shortly. </p>'
                 #msg = EmailMultiAlternatives(subject, html_content, from_email, [recipient_list])
-                email = EmailMultiAlternatives(subject, html_content, from_email, recipient_list)
+                email = EmailMultiAlternatives(subject, html_content, from_email, recipient_list, headers = {'Reply-To': 'another@example.com', 'format': 'flowed'})
                 email.attach_alternative(html_content, "text/html")
 
                 email.content_subtype = 'html'
@@ -55,42 +55,42 @@ class CustomerListCreate(generics.ListCreateAPIView):
             except KeyError:
                 return print("error")
         # save customer
-        customer = Customer.objects.filter(email=request.data['user']['email'])
+        # customer = Customer.objects.filter(email=request.data['user']['email'])
         email = ''
         phone = ''
         notes = ''
         address = ''
-        if customer.exists():
-            existingPhone = ''
-            existingAddress = ''
-            email = Customer.objects.values_list('email', flat=True).get(email=request.data['user']['email'])
-            existingPhone = Customer.objects.values_list('phone', flat=True).get(email=request.data['user']['email'])
-            existingAddress = Customer.objects.values_list('address', flat=True).get(email=request.data['user']['email'])
-            phone = request.data['user']['phone']
-            address = request.data['user']['address']
-            if (phone != existingPhone or address != existingAddress):
-                Customer.objects.update_or_create(
-                    email=email,
-                    defaults={
-                        'phone': phone,
-                        'address':address
-                    })
+        # if customer.exists():
+        #     existingPhone = ''
+        #     existingAddress = ''
+        #     email = Customer.objects.values_list('email', flat=True).get(email=request.data['user']['email'])
+        #     existingPhone = Customer.objects.values_list('phone', flat=True).get(email=request.data['user']['email'])
+        #     existingAddress = Customer.objects.values_list('address', flat=True).get(email=request.data['user']['email'])
+        #     phone = request.data['user']['phone']
+        #     address = request.data['user']['address']
+        #     if (phone != existingPhone or address != existingAddress):
+        #         Customer.objects.update_or_create(
+        #             email=email,
+        #             defaults={
+        #                 'phone': phone,
+        #                 'address':address
+        #             })
             
-        else:
-            customer = {}
-            customer['name'] = request.data['user']['fname'] + request.data['user']['lname']
-            customer['phone'] = request.data['user']['phone']
-            customer['address'] = request.data['user']['address']
-            customer['email'] = request.data['user']['email']
-            phone = customer['phone']
-            email = customer['email']
-            address = customer['address']
+        # else:
+        customer = {}
+        customer['name'] = request.data['user']['fname'] + request.data['user']['lname']
+        customer['phone'] = request.data['user']['phone']
+        customer['address'] = request.data['user']['address']
+        customer['email'] = request.data['user']['email']
+        phone = customer['phone']
+        email = customer['email']
+        address = customer['address']
             #print(customer)
-            serializer = CustomerSerializer(data=customer)
-            if serializer.is_valid():
-                serializer.save()
-            else:
-                print(serializer.errors)
+            # serializer = CustomerSerializer(data=customer)
+            # if serializer.is_valid():
+            #     serializer.save()
+            # else:
+            #     print(serializer.errors)
 
         #print(email)
         # save product order
@@ -118,23 +118,23 @@ class CustomerListCreate(generics.ListCreateAPIView):
         order['notes'] = notes
         order['products'] = {"products":len(products), "data":json.dumps(products)}
         print(order['products'])
-        Order.objects.filter(order_id='').delete()
-        key = ''
-        while True:
-            key = random_string()
-            print(key)
-            if not Order.objects.filter(order_id=key).exists():
-                break
+        # Order.objects.filter(order_id='').delete()
+        # key = ''
+        # while True:
+        key = random_string()
+            # //print(key)
+            # if not Order.objects.filter(order_id=key).exists():
+            #     break
         order['order_id'] = 'KJN' + key
         print('phone' + phone)
-        orderSerializer = OrderSerializer(data=order)
-        if orderSerializer.is_valid():
-            print(orderSerializer.validated_data)
-            orderSerializer.save()
-            send_email("noreply@gmail.com",email,order['order_id'], products, phone, notes, address)
-            return Response(orderSerializer.data, status=status.HTTP_201_CREATED)
+        # orderSerializer = OrderSerializer(data=order)
+        # if orderSerializer.is_valid():
+        #     print(orderSerializer.validated_data)
+        #     orderSerializer.save()
+        send_email("noreply@gmail.com",email,order['order_id'], products, phone, notes, address)
+        return Response(order, status=status.HTTP_201_CREATED)
 
-        return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
