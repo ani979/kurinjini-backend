@@ -131,7 +131,7 @@ class CustomerListCreate(generics.ListCreateAPIView):
         # if orderSerializer.is_valid():
         #     print(orderSerializer.validated_data)
         #     orderSerializer.save()
-        send_email("noreply@gmail.com",email,order['order_id'], products, phone, notes, address)
+        send_email("ani979@gmail.com",email,order['order_id'], products, phone, notes, address)
         return Response(order, status=status.HTTP_201_CREATED)
 
         # return Response(orderSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
